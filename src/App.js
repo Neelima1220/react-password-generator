@@ -3,7 +3,7 @@ import './style.css';
 import CheckBox from './CheckBox';
 export default function App() {
   const [password, setPassword] = useState('');
-  const [passwordlength, setPasswordlength] = useState();
+  const [passwordlength, setPasswordlength] = useState(5);
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeUpperCase, setIncludeUpperCase] = useState(false);
   const [includeLowerCase, setIncludeLowerCase] = useState(false);
@@ -13,38 +13,39 @@ export default function App() {
     let temppassword = '';
     const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const upperCaseArray = Array.from(Array(26))
-      .map((e, i) => i + 65)
+      .map((_, i) => i + 65)
       .map((n) => String.fromCharCode(n));
     const lowerCaseArray = upperCaseArray.map((item) => item.toLowerCase());
     const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
-    if (passwordlength === undefined) {
-      alert('please check atleast one option and please enter password number');
-    }
     if (
       !includeNumbers &&
       !includeLowerCase &&
       !includeUpperCase &&
-      !includesymbols &&
-      !passwordlength
+      !includesymbols
     ) {
       alert('please check atleast one option');
+    } else {
+      let availableCharacters = [
+        ...(includeNumbers ? numArray : []),
+        ...(includeUpperCase ? upperCaseArray : []),
+        ...(includeLowerCase ? lowerCaseArray : []),
+        ...(includesymbols ? symbolsArray : []),
+      ];
+      for (let i = 0; i < passwordlength; i++) {
+        const randomNum = Math.floor(
+          Math.random() * availableCharacters.length
+        );
+        temppassword += availableCharacters[randomNum];
+      }
+      setPassword(temppassword);
     }
-
-    if (passwordlength < 5) {
-      alert('password lenth should be more than 5');
-    }
-    let availableCharacters = [
-      ...(includeNumbers ? numArray : []),
-      ...(includeUpperCase ? upperCaseArray : []),
-      ...(includeLowerCase ? lowerCaseArray : []),
-      ...(includesymbols ? symbolsArray : []),
-    ];
-    for (let i = 0; i < passwordlength; i++) {
-      const randomNum = Math.floor(Math.random() * availableCharacters.length);
-      temppassword += availableCharacters[randomNum];
-    }
-    setPassword(temppassword);
   };
+
+  const handleCopyPassword = () => {
+    navigator.clipboard.writeText(password);
+    alert('you copied the text');
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', paddingBottom: '1rem' }}>
@@ -84,7 +85,10 @@ export default function App() {
       <div style={{ textAlign: 'center' }}>
         <button onClick={GeneratePassword}>submit </button>
       </div>
-      <p>Generated password: {password}</p>
+      <p>
+        Generated password:{' '}
+        <span onClick={handleCopyPassword}>{password} </span>
+      </p>
     </div>
   );
 }
