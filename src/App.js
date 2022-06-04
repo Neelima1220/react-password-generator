@@ -3,22 +3,21 @@ import './style.css';
 import CheckBox from './CheckBox';
 export default function App() {
   const [password, setPassword] = useState('');
-  const [passwordlength, setPasswordlength] = useState();
+  const [passwordlength, setPasswordlength] = useState(0);
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeUpperCase, setIncludeUpperCase] = useState(false);
   const [includeLowerCase, setIncludeLowerCase] = useState(false);
   const [includesymbols, setIncludeSymbols] = useState(false);
 
+  console.log(passwordlength, 'password');
+
   const randomPassword = () => {
     let temppassword = '';
     const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const lowerCaseArray = Array.from(Array(26))
+    const upperCaseArray = Array.from(Array(26))
       .map((e, i) => i + 65)
       .map((n) => String.fromCharCode(n));
-    // if (temppassword.trim() === '' || temppassword === null) {
-    //   alert('please select at least one option');
-    // }
-    const upperCaseArray = lowerCaseArray.map((item) => item.toLowerCase());
+    const lowerCaseArray = upperCaseArray.map((item) => item.toLowerCase());
     const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
     let availableCharacters = [
       ...(includeNumbers ? numArray : []),
@@ -26,16 +25,17 @@ export default function App() {
       ...(includeLowerCase ? lowerCaseArray : []),
       ...(includesymbols ? symbolsArray : []),
     ];
-    const shuffledArray = (array) => array.sort(() => Math.random() - 0.5);
-    console.log(availableCharacters);
-    // for (i = 0; i < passwordlength; i++) {
-    //   temppassword = String(+shuffledArray[i]);
-    // }
-    // return temppassword;
+    for (let i = 0; i < passwordlength; i++) {
+      const randomNum = Math.floor(Math.random() * availableCharacters.length);
+      console.log(randomNum, 'rr');
+      temppassword += availableCharacters[randomNum];
+    }
+    console.log(temppassword, 'team');
+    setPassword(temppassword);
   };
 
   const GeneratePassword = () => {
-    setPassword(randomPassword());
+    randomPassword();
   };
   return (
     <div>
@@ -43,7 +43,7 @@ export default function App() {
         <label style={{ flex: '1' }}>password length </label>
         <input
           style={{ flex: '1' }}
-          onChange={(e) => setPasswordlength(e.target.length)}
+          onChange={(e) => setPasswordlength(e.target.value)}
           value={passwordlength}
           type="number"
         />
