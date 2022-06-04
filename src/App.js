@@ -3,15 +3,13 @@ import './style.css';
 import CheckBox from './CheckBox';
 export default function App() {
   const [password, setPassword] = useState('');
-  const [passwordlength, setPasswordlength] = useState(0);
+  const [passwordlength, setPasswordlength] = useState();
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includeUpperCase, setIncludeUpperCase] = useState(false);
   const [includeLowerCase, setIncludeLowerCase] = useState(false);
   const [includesymbols, setIncludeSymbols] = useState(false);
 
-  console.log(passwordlength, 'password');
-
-  const randomPassword = () => {
+  const GeneratePassword = () => {
     let temppassword = '';
     const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const upperCaseArray = Array.from(Array(26))
@@ -19,6 +17,22 @@ export default function App() {
       .map((n) => String.fromCharCode(n));
     const lowerCaseArray = upperCaseArray.map((item) => item.toLowerCase());
     const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
+    if (passwordlength === undefined) {
+      alert('please check atleast one option and please enter password number');
+    }
+    if (
+      !includeNumbers &&
+      !includeLowerCase &&
+      !includeUpperCase &&
+      !includesymbols &&
+      !passwordlength
+    ) {
+      alert('please check atleast one option');
+    }
+
+    if (passwordlength < 5) {
+      alert('password lenth should be more than 5');
+    }
     let availableCharacters = [
       ...(includeNumbers ? numArray : []),
       ...(includeUpperCase ? upperCaseArray : []),
@@ -27,15 +41,9 @@ export default function App() {
     ];
     for (let i = 0; i < passwordlength; i++) {
       const randomNum = Math.floor(Math.random() * availableCharacters.length);
-      console.log(randomNum, 'rr');
       temppassword += availableCharacters[randomNum];
     }
-    console.log(temppassword, 'team');
     setPassword(temppassword);
-  };
-
-  const GeneratePassword = () => {
-    randomPassword();
   };
   return (
     <div>
