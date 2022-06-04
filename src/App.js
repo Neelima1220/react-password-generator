@@ -5,20 +5,33 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [passwordlength, setPasswordlength] = useState();
   const [includeNumbers, setIncludeNumbers] = useState(false);
-  const [IncludeUpperCase, setIncludeUpperCase] = useState(false);
+  const [includeUpperCase, setIncludeUpperCase] = useState(false);
   const [includeLowerCase, setIncludeLowerCase] = useState(false);
   const [includesymbols, setIncludeSymbols] = useState(false);
 
   const randomPassword = () => {
+    let temppassword = '';
     const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const lowerCaseArray = Array.from(Array(26))
       .map((e, i) => i + 65)
       .map((n) => String.fromCharCode(n));
-    const upperCaseArray = lowerCaseArray.map((item) => item.toUpperCase());
+    // if (temppassword.trim() === '' || temppassword === null) {
+    //   alert('please select at least one option');
+    // }
+    const upperCaseArray = lowerCaseArray.map((item) => item.toLowerCase());
     const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
-    if (password.trim() === '' || password === null) {
-      alert('please select at least one option');
-    }
+    let availableCharacters = [
+      ...(includeNumbers ? numArray : []),
+      ...(includeUpperCase ? upperCaseArray : []),
+      ...(includeLowerCase ? lowerCaseArray : []),
+      ...(includesymbols ? symbolsArray : []),
+    ];
+    const shuffledArray = (array) => array.sort(() => Math.random() - 0.5);
+    console.log(availableCharacters);
+    // for (i = 0; i < passwordlength; i++) {
+    //   temppassword = String(+shuffledArray[i]);
+    // }
+    // return temppassword;
   };
 
   const GeneratePassword = () => {
@@ -43,10 +56,10 @@ export default function App() {
         checked={includeNumbers}
       />
       <CheckBox
-        onChange={() => setIncludeUpperCase(!IncludeUpperCase)}
-        value={IncludeUpperCase}
+        onChange={() => setIncludeUpperCase(!includeUpperCase)}
+        value={includeUpperCase}
         label="include upperCase"
-        checked={IncludeUpperCase}
+        checked={includeUpperCase}
       />
       <CheckBox
         onChange={() => setIncludeLowerCase(!includeLowerCase)}
