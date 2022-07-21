@@ -5,41 +5,44 @@ import CheckBox from './CheckBox';
 export default function App() {
   const [password, setPassword] = useState('');
   const [passwordlength, setPasswordlength] = useState(5);
-  const [includeNumbers, setIncludeNumbers] = useState(false);
+  const [includeNumbers, setIncludeNumbers] = useState(true);
   const [includeUpperCase, setIncludeUpperCase] = useState(false);
   const [includeLowerCase, setIncludeLowerCase] = useState(false);
   const [includesymbols, setIncludeSymbols] = useState(false);
 
   const GeneratePassword = () => {
-    console.log(passwordlength.length);
-    let temppassword = '';
-    const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const upperCaseArray = Array.from(Array(26))
-      .map((_, i) => i + 65)
-      .map((n) => String.fromCharCode(n));
-    const lowerCaseArray = upperCaseArray.map((item) => item.toLowerCase());
-    const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
-    if (
-      !includeNumbers &&
-      !includeLowerCase &&
-      !includeUpperCase &&
-      !includesymbols
-    ) {
-      alert('please check atleast one option');
-    } else {
-      let availableCharacters = [
-        ...(includeNumbers ? numArray : []),
-        ...(includeUpperCase ? upperCaseArray : []),
-        ...(includeLowerCase ? lowerCaseArray : []),
-        ...(includesymbols ? symbolsArray : []),
-      ];
-      for (let i = 0; i < passwordlength; i++) {
-        const randomNum = Math.floor(
-          Math.random() * availableCharacters.length
-        );
-        temppassword += availableCharacters[randomNum];
+    if (passwordlength >= 5) {
+      let temppassword = '';
+      const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      const upperCaseArray = Array.from(Array(26))
+        .map((_, i) => i + 65)
+        .map((n) => String.fromCharCode(n));
+      const lowerCaseArray = upperCaseArray.map((item) => item.toLowerCase());
+      const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
+      if (
+        !includeNumbers &&
+        !includeLowerCase &&
+        !includeUpperCase &&
+        !includesymbols
+      ) {
+        alert('please check atleast one option');
+      } else {
+        let availableCharacters = [
+          ...(includeNumbers ? numArray : []),
+          ...(includeUpperCase ? upperCaseArray : []),
+          ...(includeLowerCase ? lowerCaseArray : []),
+          ...(includesymbols ? symbolsArray : []),
+        ];
+        for (let i = 0; i < passwordlength; i++) {
+          const randomNum = Math.floor(
+            Math.random() * availableCharacters.length
+          );
+          temppassword += availableCharacters[randomNum];
+        }
+        setPassword(temppassword);
       }
-      setPassword(temppassword);
+    } else {
+      alert('password length must be atleast 5');
     }
   };
 
@@ -50,7 +53,7 @@ export default function App() {
 
   return (
     <div>
-      {/* <h1> Random password Generator</h1> */}
+      <h1> Random password Generator</h1>
       <div style={{ display: 'flex', paddingBottom: '1rem' }}>
         <label style={{ flex: '1' }}>password length </label>
         <input
