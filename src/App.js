@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 import CheckBox from './CheckBox';
+
 export default function App() {
   const [password, setPassword] = useState('');
   const [passwordlength, setPasswordlength] = useState(5);
@@ -10,6 +11,7 @@ export default function App() {
   const [includesymbols, setIncludeSymbols] = useState(false);
 
   const GeneratePassword = () => {
+    console.log(passwordlength.length);
     let temppassword = '';
     const numArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const upperCaseArray = Array.from(Array(26))
@@ -48,6 +50,7 @@ export default function App() {
 
   return (
     <div>
+      {/* <h1> Random password Generator</h1> */}
       <div style={{ display: 'flex', paddingBottom: '1rem' }}>
         <label style={{ flex: '1' }}>password length </label>
         <input
